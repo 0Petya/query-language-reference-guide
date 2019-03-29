@@ -127,3 +127,22 @@ for item in items:
 | Chocolate |
 
 Doesn't seem like he has a healthy diet...
+
+### Figuring out the number of customers
+
+SQL:
+```
+SELECT COUNT(cusomterId)
+FROM customers
+```
+
+SQLAlchemy:
+```
+customer_count = session.query(func.count(Customer.customerId)
+
+print(customer_count)
+```
+
+|   |
+| - |
+| 5 |
