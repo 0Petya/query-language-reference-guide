@@ -156,7 +156,7 @@ print(customer_count)
 
 SQL:
 ```
-SELECT (c.firstName, SUM(p.price) AS 'totalSpent')
+SELECT c.firstName, SUM(p.price) AS 'totalSpent'
 FROM customers c
 INNER JOIN purchases p
 ON c.customerId = p.customerId
@@ -186,7 +186,7 @@ for customer in customer_spending:
 
 SQL:
 ```
-SELECT (c.firstName, COUNT(p.priceId) AS 'numberOfPurchases')
+SELECT c.firstName, COUNT(p.priceId) AS 'numberOfPurchases'
 FROM customers c
 INNER JOIN purchases p
 ON c.customerId = p.customerId
@@ -209,3 +209,31 @@ print(customer_purchase_count)
 | firstName | numberOfPurchases |
 | --------- | ----------------- |
 | Peter | 3 |
+
+### Finding which items were bought in between 1900 and 2000
+
+SQL:
+```
+SELECT itemName, date
+FROM items
+WHERE date >= '01-01-1900'
+AND date <= '12-31-2000'
+```
+
+SQLAlchemy:
+```
+items = session.Query(Purchase.itemName, Purchase.date).\
+  filter(Purchase.date >= '01-01-1990').\
+  filter(Purchase.date <= '12-31-2000').\
+  all()
+
+for item in items:
+  print(item)
+```
+
+| itemName | date |
+| -------- | ---- |
+| Burger | 01-01-1970 |
+| USP45 | 11-13-1965 |
+| Master Ball | 12-23-1998 |
+| Cardboard Box | 08-01-1964 |
