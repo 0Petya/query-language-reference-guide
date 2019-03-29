@@ -89,6 +89,9 @@ SQLAlchemy:
 ```
 items = session.query(Purchase.itemName, Purchase.price).\
   filter(Purchase.price > 50).all()
+  
+for item in items:
+  print(item)
 ```
 
 | itemName | price |
@@ -97,3 +100,30 @@ items = session.query(Purchase.itemName, Purchase.price).\
 | Missles | 99.99 | 3 
 | Varia Suit | 1049.99 |
 | Master Ball | 999.99 |
+
+### Finding all purchases made by Peter Tran
+
+SQL:
+```
+SELECT itemName
+FROM purchases p
+INNER JOIN customers c
+ON p.customerId = c.customerId
+```
+
+SQLAlchemy:
+```
+items = session.query(Purchase.itemName).\
+  filter(Purchase.customerId == Customer.customerId).all()
+
+for item in items:
+  print(item)
+```
+
+| itemName |
+| -------- |
+| Burger |
+| French Fries |
+| Chocolate |
+
+Doesn't seem like he has a healthy diet...
