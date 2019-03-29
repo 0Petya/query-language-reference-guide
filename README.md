@@ -35,7 +35,7 @@ Ok, now we can start.
 ### SQLAlchemy setup
 Before we can start querying with SQLAlchemy, there's some setup we have to do to reflect the tables.
 Here's the boilerplate for `shopDB`.
-```
+```python
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -57,12 +57,12 @@ Now we can use the `session` object to make our queries.
 ### Selecting everything from a table
 
 SQL:
-```
+```sql
 SELECT * FROM customers;
 ```
 
 SQLAlchemy:
-```
+```python
 customers = session.query(Customer.customerId, Customer.firstName, Customer.lastName).\
   all()
   
@@ -81,14 +81,14 @@ for customer in customers:
 ### Getting all purchases made over $50
 
 SQL:
-```
+```sql
 SELECT itemName, price
 FROM purchases
 WHERE price > 50;
 ```
 
 SQLAlchemy:
-```
+```python
 items = session.query(Purchase.itemName, Purchase.price).\
   filter(Purchase.price > 50).\
   all()
@@ -107,7 +107,7 @@ for item in items:
 ### Finding all purchases made by Peter Tran
 
 SQL:
-```
+```sql
 SELECT itemName
 FROM purchases p
 INNER JOIN customers c
@@ -115,7 +115,7 @@ ON p.customerId = c.customerId;
 ```
 
 SQLAlchemy:
-```
+```python
 items = session.query(Purchase.itemName).\
   filter(Purchase.customerId == Customer.customerId).\
   all()
@@ -135,13 +135,13 @@ Doesn't seem like I have a healthy diet...
 ### Figuring out the number of customers
 
 SQL:
-```
+```sql
 SELECT COUNT(cusomterId) AS 'customerCount'
 FROM customers;
 ```
 
 SQLAlchemy:
-```
+```python
 customer_count = session.query(func.count(Customer.customerId)).\
   all()
 
@@ -155,7 +155,7 @@ print(customer_count)
 ### Finding how much money each customer has spent
 
 SQL:
-```
+```sql
 SELECT c.firstName, SUM(p.price) AS 'totalSpent'
 FROM customers c
 INNER JOIN purchases p
@@ -164,7 +164,7 @@ GROUP BY c.customerId;
 ```
 
 SQLAlchemy:
-```
+```python
 customer_spending = session.query(Customer.firstName, func.sum(Purchase.price)).\
   filter(Customer.customerId == Purchase.customerId).\
   group_by(Customer.customerId).\
@@ -185,7 +185,7 @@ for customer in customer_spending:
 ### Figuring out who made the most purchases (yes I know it's me)
 
 SQL:
-```
+```sql
 SELECT c.firstName, COUNT(p.priceId) AS 'numberOfPurchases'
 FROM customers c
 INNER JOIN purchases p
@@ -196,7 +196,7 @@ LIMIT 1;
 ```
 
 SQLAlchemy:
-```
+```python
 customer_purchase_count = session.query(Customer.firstName, func.count(Purchase.purchaseId)).\
   filter(Customer.customerId == Purchase.customerId).\
   group_by(Customer.customerId).\
@@ -213,7 +213,7 @@ print(customer_purchase_count)
 ### Finding which items were bought in between 1900 and 2000
 
 SQL:
-```
+```sql
 SELECT itemName, date
 FROM items
 WHERE date >= '01-01-1900'
@@ -221,7 +221,7 @@ AND date <= '12-31-2000'
 ```
 
 SQLAlchemy:
-```
+```python
 items = session.Query(Purchase.itemName, Purchase.date).\
   filter(Purchase.date >= '01-01-1990').\
   filter(Purchase.date <= '12-31-2000').\
