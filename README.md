@@ -46,8 +46,8 @@ engine = create_engine("sqlite:///shopDB.sqlite")
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 
-Customer = Base.classes.customer
-Purchase = Base.classes.purchase
+Customer = Base.classes.customers
+Purchase = Base.classes.purchases
 
 session = Session(engine)
 ```
@@ -132,17 +132,46 @@ Doesn't seem like he has a healthy diet...
 
 SQL:
 ```
-SELECT COUNT(cusomterId)
+SELECT COUNT(cusomterId) AS 'customerCount'
 FROM customers
 ```
 
 SQLAlchemy:
 ```
-customer_count = session.query(func.count(Customer.customerId)
+customer_count = session.query(func.count(Customer.customerId)).all()
 
 print(customer_count)
 ```
 
-|   |
-| - |
+| customerCount |
+| ------------- |
 | 5 |
+
+### Finding how much money each customer has spent
+
+SQL:
+```
+SELECT (c.firstName, SUM(p.price) AS 'totalSpent')
+FROM customers c
+INNER JOIN purchases p
+ON c.customerId = p.customerId
+GROUP BY c.customerId
+```
+
+SQLAlchemy:
+```
+customer_spending = session.query(Customer.firstName, func.sum(Purchase.price))\.
+  filter(Customer.customerId == Purchase.customerId)\.
+  group_by(Customer.customerId).all()
+
+for customer in customer_spending:
+  print(customer)
+```
+
+| firstName | totalSpent |
+| --------- | ---------- |
+| Peter | 11.99 |
+| Ash | 999.99 |
+| Samus | 1149.98 |
+| Big | 300.99 |
+| Gordon | 26.48 |
