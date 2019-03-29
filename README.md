@@ -58,12 +58,14 @@ Now we can use the `session` object to make our queries.
 
 SQL:
 ```
-SELECT * FROM customers
+SELECT * FROM customers;
 ```
 
 SQLAlchemy:
 ```
-customers = session.query(Customer.customerId, Customer.firstName, Customer.lastName).all()
+customers = session.query(Customer.customerId, Customer.firstName, Customer.lastName).\
+  all()
+  
 for customer in customers:
   print(customer)
 ```
@@ -82,13 +84,14 @@ SQL:
 ```
 SELECT itemName, price
 FROM purchases
-WHERE price > 50
+WHERE price > 50;
 ```
 
 SQLAlchemy:
 ```
 items = session.query(Purchase.itemName, Purchase.price).\
-  filter(Purchase.price > 50).all()
+  filter(Purchase.price > 50).\
+  all()
   
 for item in items:
   print(item)
@@ -108,13 +111,14 @@ SQL:
 SELECT itemName
 FROM purchases p
 INNER JOIN customers c
-ON p.customerId = c.customerId
+ON p.customerId = c.customerId;
 ```
 
 SQLAlchemy:
 ```
 items = session.query(Purchase.itemName).\
-  filter(Purchase.customerId == Customer.customerId).all()
+  filter(Purchase.customerId == Customer.customerId).\
+  all()
 
 for item in items:
   print(item)
@@ -133,12 +137,13 @@ Doesn't seem like he has a healthy diet...
 SQL:
 ```
 SELECT COUNT(cusomterId) AS 'customerCount'
-FROM customers
+FROM customers;
 ```
 
 SQLAlchemy:
 ```
-customer_count = session.query(func.count(Customer.customerId)).all()
+customer_count = session.query(func.count(Customer.customerId)).\
+  all()
 
 print(customer_count)
 ```
@@ -155,14 +160,15 @@ SELECT (c.firstName, SUM(p.price) AS 'totalSpent')
 FROM customers c
 INNER JOIN purchases p
 ON c.customerId = p.customerId
-GROUP BY c.customerId
+GROUP BY c.customerId;
 ```
 
 SQLAlchemy:
 ```
-customer_spending = session.query(Customer.firstName, func.sum(Purchase.price))\.
-  filter(Customer.customerId == Purchase.customerId)\.
-  group_by(Customer.customerId).all()
+customer_spending = session.query(Customer.firstName, func.sum(Purchase.price)).\
+  filter(Customer.customerId == Purchase.customerId).\
+  group_by(Customer.customerId).\
+  all()
 
 for customer in customer_spending:
   print(customer)
@@ -175,3 +181,31 @@ for customer in customer_spending:
 | Samus | 1149.98 |
 | Big | 300.99 |
 | Gordon | 26.48 |
+
+### Figuring out who made the most purchases (yes I know it's me)
+
+SQL:
+```
+SELECT (c.firstName, COUNT(p.priceId) AS 'numberOfPurchases')
+FROM customers c
+INNER JOIN purchases p
+ON c.customerId = p.customerId
+GROUP BY c.customerId
+ORDER BY numberOfPurchases DESC
+LIMIT 1;
+```
+
+SQLAlchemy:
+```
+customer_purchase_count = session.query(Customer.firstName, func.count(Purchase.purchaseId)).\
+  filter(Customer.customerId == Purchase.customerId).\
+  group_by(Customer.customerId).\
+  order_by(func.count(Purchase.purchaseId)).\
+  first()
+
+print(customer_purchase_count)
+```
+
+| firstName | numberOfPurchases |
+| --------- | ----------------- |
+| Peter | 3 |
