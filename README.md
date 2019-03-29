@@ -1,9 +1,9 @@
-# query-language-reference-guide
+# Query Language Reference Guide
 A reference for knowing how to perform equivalent queries in different languages/paradigms. 
 
-A lot of times, you have a database that you need to get some information out of. You know how to write a SQL query to get that information, but you aren't sure how to do the equivalent in something like SQLAlchemy. Well this guide is here to show you how to perform the equivalent query for common SQL queries.
+A lot of times, you have a database that you need to get some information out of. You know how to write a SQL query to get that information, but you aren't sure how to do the equivalent in something like SQLAlchemy. Well this guide is here to show you how to perform the equivalent query for common use cases.
 
-Ok, first lets define our database that has two tables, customer and purchase:
+First lets define our database `shopDB` that has two tables, `customer` and `purchase`:
 
 # shopDB
 
@@ -34,7 +34,7 @@ Ok, now we can start.
 
 ### SQLAlchemy setup
 Before we can start querying with SQLAlchemy, there's some setup we have to do to reflect the tables.
-Here's the boilerplate for our database `shopDB`.
+Here's the boilerplate for `shopDB`.
 ```
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -130,7 +130,7 @@ for item in items:
 | French Fries |
 | Chocolate |
 
-Doesn't seem like he has a healthy diet...
+Doesn't seem like I have a healthy diet...
 
 ### Figuring out the number of customers
 
