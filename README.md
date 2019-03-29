@@ -57,16 +57,16 @@ Now we can use the `session` object to make our queries.
 ### Selecting everything from a table
 SQL:
 ```
-
 SELECT * FROM customers
 ```
 
 SQLAlchemy:
 ```
-stubb
+customers = session.query(Customer.customerId, Customer.firstName, Customer.lastName)
+for customer in customers:
+  print(customer)
 ```
 
-```
 | customerId | firstName | lastName | 
 | ---------- | --------- | -------- |
 | 1 | Peter | Tran |
@@ -74,4 +74,3 @@ stubb
 | 3 | Samus | Aran |
 | 4 | Big | Boss |
 | 5 | Gordon | Freeman |
-```
