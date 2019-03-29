@@ -54,7 +54,7 @@ session = Session(engine)
 
 Now we can use the `session` object to make our queries.
 
-### Selecting everything from a table
+### Selecting everything from a table (SELECT *)
 
 SQL:
 ```sql
@@ -78,7 +78,7 @@ for customer in customers:
 | 4 | Big | Boss |
 | 5 | Gordon | Freeman |
 
-### Getting all purchases made over $50
+### Getting all purchases made over $50 (WHERE)
 
 SQL:
 ```sql
@@ -104,7 +104,7 @@ for item in items:
 | Varia Suit | 1049.99 |
 | Master Ball | 999.99 |
 
-### Finding all purchases made by Peter Tran
+### Finding all purchases made by Peter Tran (JOIN)
 
 SQL:
 ```sql
@@ -132,7 +132,7 @@ for item in items:
 
 Doesn't seem like I have a healthy diet...
 
-### Figuring out the number of customers
+### Figuring out the number of customers (Aggregate function)
 
 SQL:
 ```sql
@@ -152,7 +152,7 @@ print(customer_count)
 | ------------- |
 | 5 |
 
-### Finding how much money each customer has spent
+### Finding how much money each customer has spent (GROUP BY)
 
 SQL:
 ```sql
@@ -182,7 +182,7 @@ for customer in customer_spending:
 | Big | 300.99 |
 | Gordon | 26.48 |
 
-### Figuring out who made the most purchases (yes I know it's me)
+### Figuring out who made the most purchases (yes I know it's me) (ORDER BY and LIMIT)
 
 SQL:
 ```sql
@@ -210,7 +210,7 @@ print(customer_purchase_count)
 | --------- | ----------------- |
 | Peter | 3 |
 
-### Finding which items were bought in between 1900 and 2000
+### Finding which items were bought in between 1900 and 2000 (Multiple WHERE conditions)
 
 SQL:
 ```sql
