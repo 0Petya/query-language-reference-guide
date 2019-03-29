@@ -55,6 +55,7 @@ session = Session(engine)
 Now we can use the `session` object to make our queries.
 
 ### Selecting everything from a table
+
 SQL:
 ```
 SELECT * FROM customers
@@ -62,7 +63,7 @@ SELECT * FROM customers
 
 SQLAlchemy:
 ```
-customers = session.query(Customer.customerId, Customer.firstName, Customer.lastName)
+customers = session.query(Customer.customerId, Customer.firstName, Customer.lastName).all()
 for customer in customers:
   print(customer)
 ```
@@ -74,3 +75,25 @@ for customer in customers:
 | 3 | Samus | Aran |
 | 4 | Big | Boss |
 | 5 | Gordon | Freeman |
+
+### Getting all purchases made over $50
+
+SQL:
+```
+SELECT itemName, price
+FROM purchases
+WHERE price > 50
+```
+
+SQLAlchemy:
+```
+items = session.query(Purchase.itemName, Purchase.price).\
+  filter(Purchase.price > 50).all()
+```
+
+| itemName | price |
+| -------- | ----- |
+| USP45 | 300.00 |
+| Missles | 99.99 | 3 
+| Varia Suit | 1049.99 |
+| Master Ball | 999.99 |
